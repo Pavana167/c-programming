@@ -32,11 +32,27 @@ void initSpielfeld(char feld[SIZE][SIZE]) {     //Die Funktion speichert,das mit
 
     for (int i = 0; i < SIZE; i++) {            //Hier wird der Vektor, der der Funktion uebergeben wurde, gleich "start" gesetzt
         for (int j = 0; j < SIZE; j++) {        //Die Funktion "initSpielfeld" koennte auch in der Datei mit der main-Funktion implementiert werden
-            feld[i][j] = start[i][j];
+            feld[i][j] = start[i][j];           
         }
     }
 }
+//alternative Implementierung für initSpielfeld
+//void initSpielfeld(char feld[SIZE][SIZE]) {
 
+//    const char* zeilen[SIZE] = {
+//        "S.#..",
+//        "..#.G",
+//        "#.T.#",
+//        ".##..",
+//        "...A."
+//    };
+
+//    for (int i = 0; i < SIZE; i++) {
+//        for (int j = 0; j < SIZE; j++) {
+//            feld[i][j] = zeilen[i][j];
+//        }
+//    }
+//}
 
 /*
 Gibt das aktuelle Spielfeld und die verbleibenden Leben des Spielers
