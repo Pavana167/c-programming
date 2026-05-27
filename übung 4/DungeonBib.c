@@ -21,38 +21,38 @@ Parameter:
 Rueckgabewert:
     keiner
 */
+/*
 void initSpielfeld(char feld[SIZE][SIZE]) {     //Die Funktion speichert,das mit "start" implementierte Spielfeld in, dem ihr uebergebenen, Vektor
     char start[SIZE][SIZE] = {                  //"start" ist ein, in der Funktion, als 2D Array, gespeichertes Spielfeld
         {'S', '.', '#', '.', '.'},              //"start" und der uebergebene Vektor haben die gleiche Groesse SIZE (= 5)
         {'.', '.', '#', '.', 'G'},
-        {'#', '.', 'T', '.', '#'},
+        {'#', '.', '.', '.', '#'},
         {'.', '#', '#', '.', '.'},
         {'.', '.', '.', 'A', '.'}
     };
 
     for (int i = 0; i < SIZE; i++) {            //Hier wird der Vektor, der der Funktion uebergeben wurde, gleich "start" gesetzt
         for (int j = 0; j < SIZE; j++) {        //Die Funktion "initSpielfeld" koennte auch in der Datei mit der main-Funktion implementiert werden
-            feld[i][j] = start[i][j];           
+            feld[i][j] = start[i][j];
         }
     }
 }
-//alternative Implementierung für initSpielfeld
-//void initSpielfeld(char feld[SIZE][SIZE]) {
+*/
+void initSpielfeld(char feld[SIZE][SIZE]) {     //Die Funktion speichert,das mit "start" implementierte Spielfeld in, dem ihr uebergebenen, Vektor
+    char start[SIZE][SIZE] = {                  //"start" ist ein, in der Funktion, als 2D Array, gespeichertes Spielfeld
+        "S.#..",                                //"start" und der uebergebene Vektor haben die gleiche Groesse SIZE (= 5)
+        "..#.G",
+        "#.T.#",
+        ".##..",
+        "...A."
+    };
 
-//    const char* zeilen[SIZE] = {
-//        "S.#..",
-//        "..#.G",
-//        "#.T.#",
-//        ".##..",
-//        "...A."
-//    };
-
-//    for (int i = 0; i < SIZE; i++) {
-//        for (int j = 0; j < SIZE; j++) {
-//            feld[i][j] = zeilen[i][j];
-//        }
-//    }
-//}
+    for (int i = 0; i < SIZE; i++) {            //Hier wird der Vektor, der der Funktion uebergeben wurde, gleich "start" gesetzt
+        for (int j = 0; j < SIZE; j++) {        //Die Funktion "initSpielfeld" koennte auch in der Datei mit der main-Funktion implementiert werden
+            feld[i][j] = start[i][j];
+        }
+    }
+}
 
 /*
 Gibt das aktuelle Spielfeld und die verbleibenden Leben des Spielers
@@ -247,7 +247,7 @@ Parameter:  feld[][]:    Array, in dem das Spielfeld gespeichert ist
                          die aktuelle X-Koordinate bzw.Y-Koordinate des Spielers
             status:      Pointer einer positiven Ganzzahl
                          der Status des Spiels wird in dieser Variable mithilfe von Konstanten gespeichert
-Rueckgabewert: keiner 
+Rueckgabewert: keiner
  */
 void gegnerZug(char feld[SIZE][SIZE], int* gx, int* gy,
     int* leben, int px, int py, int* status) {
