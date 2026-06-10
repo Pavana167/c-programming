@@ -1,0 +1,74 @@
+/*
+Projekt:
+	Sitzplatzverteilung im Hoersaal
+Autor:
+	Pavana Shaji, Max Schulz
+Beschreibung:
+	Dieses Programm simuliert die Besetzung eines Hoersaals mit 12 Sitzreihen
+	und jeweils 10 Plaetzen. Olli setzt sich zuerst auf einen vom Benutzer
+	eingegebenen Platz in der ersten Reihe. Danach werden weitere Studierende
+	nach den vorgegebenen Regeln platziert.
+Regeln:
+	- Niemand sitzt direkt hinter einem anderen Studierenden.
+	- Jeder Studierende muss rechts oder links einen freien Nachbarplatz haben.
+	- Bereits sitzende Studierende duerfen durch neue Platzierungen nicht
+	  ihren benoetigten freien Nachbarplatz verlieren.
+	- Die Plaetze werden von vorne links nach hinten rechts geprueft.
+*/
+
+
+#define _CRT_SECURE_NO_WARNINGS_
+#include "5aufgabe6.h"
+#include<stdio.h>
+
+int main() {
+	char hoersaal[SITZ_REIHEN][PLAETZEN]; // Deklaration des Hoersaals als zweidimensionales Array.
+	int check = 1;						  // Initialisierung der Kontrollvariable fuer die Eingabeschleife.
+	int olli = 0;						  // Initialisierung der Variable fuer Ollis Sitzplatz.
+
+	// Der gesamte Hoersaal wird zuerst mit leeren Plaetzen initialisiert.
+	// Ein Leerzeichen bedeutet, dass der Platz noch frei ist.
+	for (int i = 0;i < SITZ_REIHEN;i++) {
+		for (int j = 0;j < PLAETZEN;j++) {
+			hoersaal[i][j] = ' ';
+		}
+	}
+
+	// Kurze Einleitung fuer den Benutzer mit den wichtigsten Informationen zum Programm.
+	printf("Programm zur Sitzplatzverteilung im Hoersaal\n");
+	printf("Der Hoersaal hat %d Reihen mit jeweils %d Plaetzen.\n", SITZ_REIHEN, PLAETZEN);
+	printf("Olli kommt als erster und setzt sich in die erste Reihe.\n");
+	printf("Bitte geben Sie einen Sitzplatz von 1 bis %d ein.\n\n", PLAETZEN);
+
+
+	// Olli setzt sich immer in die erste Reihe.
+	// Die Eingabe wird so lange wiederholt, bis ein gueltiger Platz eingegeben wurde.
+	while (check == 1) {
+		printf("auf welchen Platz in der ersten Reihe soll sich Olli heute sitzen?:");
+		scanf_s("%d", &olli);
+		while (getchar() != '\n');
+
+		if (olli>=1 && olli <=PLAETZEN) {
+			
+			hoersaal[0][olli - 1] = '*';
+			check = 0;
+		}
+		else {
+			printf("Ungueltiger Sitzplatz!\n");
+			continue;
+		}
+	}
+	
+	printf("Sitzplatzverteilung eine halbe Stunde vor der Vorlesung\n");
+	ausgebenHoersaal(hoersaal);// Ausgabe des Sitzplans, nachdem nur Olli seinen Platz eingenommen hat.
+	besetzeHoersaal(hoersaal);// Danach werden alle weiteren Studierenden nach den vorgegebenen Regeln platziert.
+	printf("Sitzplatzverteilung zum Beginn der Vorlesung\n");
+	ausgebenHoersaal(hoersaal);// Ausgabe des endgueltigen Sitzplans zu Beginn der Vorlesung.
+	
+
+	// Die belegten Plaetze werden gezaehlt und ausgegeben.
+	int belegtePlaetze = zaehleBelegtePlaetze(hoersaal);
+	printf("Es sind %d Plaetze belegt.\n", belegtePlaetze);
+	
+	return 0;
+}
