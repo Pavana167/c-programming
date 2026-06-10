@@ -1,0 +1,51 @@
+/* --------------------------------------------------------------
+ * Programm zur Auswertung von Temperaturmessungen in drei
+ * Serverraeumen eines Rechenzentrums.
+ * 
+ * Autor: Pavana Shaji, Max Schulz
+ *
+ * Das Programm:
+ * - liest sechs Temperaturmesswerte pro Raum ein,
+ * - berechnet Durchschnittswerte,
+ * - bestimmt den hoechsten gemessenen Wert ueber alle Raeume,
+ * - ermittelt den stabilsten Raum anhand der kleinsten
+ *   Temperaturspanne (Max-Min),
+ * - und gibt alle Messwerte tabellarisch aus.
+ *
+ * Besonderheiten der Implementierung:
+ * - Falls mehrere Raeume denselben hoechsten Messwert besitzen,
+ *   werden alle entsprechenden Raeume ausgegeben.
+ * - Falls mehrere Raeume gleich stabil sind (gleiche Differenz),
+ *   werden ebenfalls alle stabilsten Raeume angezeigt.
+ * -------------------------------------------------------------- */
+
+#define _CRT_SECURE_NO_WARNINGS
+#include"5aufgabe2.h"
+#include<stdio.h>
+
+
+int main() {
+	double temperaturen[ANZAHL_RAEUME][ANZAHL_MESSWERTE_PRO_TAG];
+	int messwerteProRaum = sizeof(temperaturen[0]) / sizeof(temperaturen[0][0]);//Anzahl der Messwerte pro Raum
+
+	//Benutzer-Intro
+	printf("=============================================\n");
+	printf("   Temperaturueberwachung : Rechenzentrum\n");
+	printf("=============================================\n");
+	printf("Dieses Programm liest Temperaturwerte in %cC aus\n",(char)248);
+	printf("drei Serverraeumen ein und analysiert sie.\n");
+	printf("Bitte geben Sie die Messwerte ein.\n\n");
+
+	
+
+
+	einlesen(temperaturen);	// Temperaturen fuer alle Raeme einlesen
+	printf("-- Auswertung --\n"); 
+	durchschnitt(temperaturen,messwerteProRaum); // Durchschnittstemperatur pro Raum berechnen und ausgeben
+	hMesswert(temperaturen); //Hoechsten Messwert mit Raum- und Messwernummer ausgeben
+	stbRaum(temperaturen); // Raum mit der kleinsten Temperaturdifferenz ausgeben
+	printf("\n-- Temperaturentabelle --\n");
+	temperaturentabelle(temperaturen); // Alle Messwerte tabellarisch ausgeben
+
+	return 0;
+}
