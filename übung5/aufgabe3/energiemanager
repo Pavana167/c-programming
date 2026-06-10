@@ -1,0 +1,155 @@
+//Max Schulz, Pavana Shaji
+
+#include <stdio.h>
+
+/*
+@brief Diese Funktion liest eine Ganzzahl in einem bestimmten Intervall von der Tastatur ein.
+Falls der Benutzer eine ungueltige Ganzzahl eingibt, wird der Benutzer zur erneuten Eingabe aufgefordert.
+Dies geschieht solange, bis der Benutzer eine gueltige Ganzzahl eingibt.
+
+@param min Dies ist die Untergrenze des gueltigen Intervalls.
+@param max Dies ist die Obergrenze des gueltigen Intervalls.
+
+@returns Die eingelesene Ganzzahl oder "0", wenn min > max
+*/
+int einlesenIntIntervall(int min, int max) {
+	double eingabe;				//Vom Benutzer eingegebene Zahl, double statt int, damit Gleitunktzahlen erkannt und nicht abgeschnitten werden
+	double hilfe;				//Hilfswert zum Rechnen
+	int eingabeRichtig = 0;		//Abbruchbedingung fuehr die Schleife
+
+	//Ueberpruefen, ob min < max
+	//Wenn min > max ist, wird eine Endlosschleife entstehen, da "eingabe" dann nicht gleichzeitig groesser als "min" und kleiner als "max" sein kann
+	//Wenn max = min gibt es nur eine Eingabemoeglichkeit
+	if (min > max) {
+		return 0;
+	}
+
+	while(eingabeRichtig == 0){
+
+		//Eingabe
+		printf("\nBitte geben Sie eine Ganzzahl zwischen %d und %d ein: ", min, max);
+
+		//Pruefen, ob die Eingabe eine Zahl ist
+		if (scanf_s("%lf", &eingabe) == 0) {
+			printf("Das ist keine Zahl.");
+			while (getchar() != '\n');
+			continue;
+		}
+		while (getchar() != '\n');
+
+		//Eingabe pruefen
+		//Eingabe auf Ganzzahl pruefen
+		if (eingabe < 0) {
+			hilfe = eingabe * -1;
+		}
+		else {
+			hilfe = eingabe;
+		}
+		while (hilfe > 0) {
+			hilfe--;
+		}
+		if (hilfe < 0) {
+			printf("Die Zahl muss eine Ganzzahl sein.");
+			continue;
+		}
+
+		//Pruefen, ob die Eingabe im Intervall liegt
+		if (eingabe > max) {
+			printf("Die Zahl ist zu gross.");
+			continue;
+		}
+		else if (eingabe < min) {
+			printf("Die Zahl ist zu klein.");
+			continue;
+		}
+		else {
+			eingabeRichtig = 1;
+		}
+	}
+	return (int)eingabe;
+}
+/*
+ Function: einlesenIntIntervall
+
+Test case 1:
+Input parameters: min = 1, max = 5
+User input: 3
+Expected output: 3
+Explanation: 3 is an integer and lies inside the interval [1, 5].
+
+Test case 2:
+Input parameters: min = 1, max = 5
+User input: 8, then 4
+Expected behavior: 8 is rejected because it is too large. 4 is accepted and returned.
+*/
+
+/**
+@brief Die Funktion berechnet die Kosten in Euro fuer die durch den Parameter energie gegebene Energie in kWh.
+Die Kosten berechnen sich nach der folgenden Staffel:
+- Energie betraegt weniger als 20 kWh -> Die kWh kostet 40Ct.
+- Energie betraegt weniger als oder genau 50 kWh -> Die kWh kostet 35Ct.
+- Energie betraegt mehr als 50 kWh -> Die kWh kostet 30Ct.
+- Falls die Energie 40 kWh uebersteigt, faellt ein Kostenzuschlag von 10% an.
+
+@param energie Fuer die gegebene Energie in kWh sollen die Kosten in Euro berechnet werden.
+
+@returns Die Funktion gibt die Kosten für die Energie in Euro oder "-1", falls der Parameter energie < 0 ist, zurueck.
+*/
+double kostenBerechnenMitTarif(double energie) {
+	double kosten = 0;		//Der Rueckgabewert
+
+	//Parameter ueberpruefen
+	if (energie < 0) {
+		return -1;
+	}
+
+	//Kosten anhand der Energiemenge Berechnen
+	if (energie < 20) {
+		kosten = 0.4 * energie;
+	}
+	else if (energie <= 50) {
+		kosten = 0.35 * energie;
+	}
+	else if (energie > 50) {
+		kosten = 0.3 * energie;
+	}
+
+	//Kostenzuschlag berechnen
+	if (energie > 40) {
+		kosten = kosten * 1.1;
+	}
+	return kosten;
+}
+
+/*
+Function: kostenBerechnenMitTarif
+
+Test case 1:
+Input: energie = 10
+Expected output: 4.00
+Explanation: 10 kWh is below 20 kWh, so price is 0.40 Euro/kWh.
+10 * 0.40 = 4.00
+
+Test case 2:
+Input: energie = 45
+Expected output: 17.325
+Explanation: 45 kWh is <= 50, so price is 0.35 Euro/kWh.
+Because 45 > 40, a 10% surcharge is added.
+45 * 0.35 * 1.1 = 17.325
+
+
+*/
+
+/*
+void main() {
+	double eingabe;
+	scanf_s("%lf", &eingabe);
+	printf("%lf", kostenBerechnenMitTarif(eingabe));
+}
+*/
+
+/*
+void main() {
+	einlesenIntIntervall(-100, 100);
+}
+*/
