@@ -1,0 +1,28 @@
+/*
+Aufgabe:
+    Erweiterung der Temperaturueberwachung in einem Rechenzentrum
+
+Beschreibung:
+    Dieses Programm speichert Temperaturmesswerte fuer drei Serverraeume
+    ueber eine ganze Woche. Pro Raum werden an jedem Tag sechs Messwerte
+    eingelesen. Anschliessend wird der hoechste Messwert ueber alle Raeume
+    und Tage ermittelt und alle Temperaturen werden tabellarisch ausgegeben.
+*/
+#define _CRT_SECURE_NO_WARNINGS
+#include"5aufgabe4.h"
+#include<stdio.h>
+
+int main() {
+	// Dreidimensionales Array zur Speicherung der Temperaturen.
+	double temperaturen[ANZAHL_RAEUME][ANZAHL_MESSWERTE_PRO_TAG][ANZAHL_TAGE];
+
+	einlesen(temperaturen);// Einlesen aller Temperaturwerte fuer alle Raeume und alle Tage.
+	printf("-- Auswertung --\n");
+	hMesswert(temperaturen);//hoechste Temperatur bestimmen und ausgeben
+	printf("\n-- Temperaturentabelle --\n");
+	temperaturentabelle(temperaturen);// Tabellarische Ausgabe aller gespeicherten Temperaturwerte.
+	
+	return 0;
+}
+
+
