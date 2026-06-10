@@ -1,0 +1,128 @@
+//Max Schulz, Pavana Shaji
+
+#include <stdio.h>
+#include "myString.h"
+#include <stdbool.h>
+
+void main() {
+	char zeichenkette1[SIZE];		//Zum Speichern, einer vom Benutzer eingegebenen, Zeichenkette
+	char zeichenkette2[SIZE];		//Zum Speichern, einer vom Benutzer eingegebenen, Zeichenkette
+	char zeichen;					//Zum Speichern, eines vom Benutzer eingegebenen, Zeichens
+	char eingabe;					//Was getan werden soll
+	int ergebnis;					//Um die Rueckgabe einer Funktion zu Speichern
+	bool programmaktiv = true;		//Ob das Programm noch ausgefuehrt werden soll, oder nicht
+	
+	//Einfuehrung des Benutzers
+	printf("----------Programm zum Verarbeiten von Zeichenketten----------\n");
+	printf("Zeichenketten k%cnnen maximal %d Zeichen lang sein. Jedes Zeichen dar%cber hinaus wird abgeschnitten.\n", (char)148, SIZE, (char)129);
+	printf("Leerzeichen und Tabulatoren werden ber%ccksichtigt.\n", (char)129);
+	printf("V - vergleichen, L - L%cnge, S - suchen, Z - zusammenf%cgen, B - beenden", (char)132, (char)129);
+
+	//Hauptschleife
+	while (programmaktiv) {
+
+		//Eingeben, was getan werden soll
+		printf("\n\nGeben Sie ein, was getan werden soll: ");
+		scanf_s("%c", &eingabe, 1);
+		while (getchar() != '\n');
+
+		//Ausfuehren
+		switch (eingabe) {
+		case 'L':
+		case 'l':
+
+			//Eingabe
+			printf("Geben Sie etwas ein: ");
+			scanf_s("%[^\n]", &zeichenkette1, SIZE);
+			while (getchar() != '\n');
+
+			//Ausgabe
+			printf("L%cnge der Zeichenkette: %d", (char)132, myStrlen(zeichenkette1));
+
+			break;
+		case 'V':
+		case 'v':
+
+			//Eingabe
+			printf("Geben Sie die erste Zeichenkette ein: ");
+			scanf_s("%[^\n]", &zeichenkette1, SIZE);
+			while (getchar() != '\n');
+
+			//Eingabe
+			printf("Geben Sie die zweite Zeichenkette ein: ");
+			scanf_s("%[^\n]", &zeichenkette2, SIZE);
+			while (getchar() != '\n');
+
+			//Ausgabe
+			switch (myStrcmp(zeichenkette1, zeichenkette2)) {
+			case 0:
+				printf("Die Zeichenketten sind gleich.");
+				break;
+			case 1:
+				printf("Die Zeichenketten sind gleich lang, haben aber mindestens ein unterschiedliches Zeichen.");
+				break;
+			case 2:
+				printf("Die Zeichenketten sind unterschiedlich.");
+				break;
+			}
+			break;
+		case 'S':
+		case 's':
+
+			//Eingabe
+			printf("Geben Sie die Zeichenkette ein, in der gesucht werden soll: ");
+			scanf_s("%[^\n]", &zeichenkette1, SIZE);
+			while (getchar() != '\n');
+
+			//Eingabe
+			printf("Geben Sie das Zeichen ein, nach dem gesucht werden soll: ");
+			scanf_s("%c", &zeichen, 1);
+			while (getchar() != '\n');
+
+			//Verarbeitung
+			ergebnis = myStrchr(zeichenkette1, zeichen);
+
+			//Ausgabe
+			if (ergebnis == -1) {
+				printf("Das Zeichen '%c' ist nicht in der Zeichenkette enthallten.", zeichen);
+			}
+			else {
+				printf("Das Zeichen '%c' taucht als erstes an der Stelle %d in der Zeichenkette auf.", zeichen, ergebnis + 1);
+			}
+			break;
+		case 'Z':
+		case 'z':
+
+			//Eingabe
+			printf("Geben Sie die erste Zeichenkette ein: ");
+			scanf_s("%[^\n]", &zeichenkette1, SIZE);
+			while (getchar() != '\n');
+
+			//Eingabe
+			printf("Geben Sie die zweite Zeichenkette ein: ");
+			scanf_s("%[^\n]", &zeichenkette2, SIZE);
+			while (getchar() != '\n');
+
+			printf("%d", myStrlen(zeichenkette1));
+			//Verarbeitung
+			ergebnis = myStrcat(zeichenkette1, zeichenkette2, SIZE);
+			printf("%d", myStrlen(zeichenkette1));
+
+			//Ausgabe
+			if (ergebnis == -1) {
+				printf("Die Zeichenketten konnten nicht zusammengef%cgt werden, da die Gesammtl%cnge zu lang ist.",(char)129, (char)132);
+			}
+			else {
+				printf("Die Gesammtzeichenkette lautet: %s",zeichenkette1);
+			}
+
+			break;
+		case 'B':
+		case 'b':
+			programmaktiv = false;
+			continue;
+		default:
+			printf("Es wurde eine ung%cltige Eingabe gemacht.", (char)129);
+		}
+	}
+}
