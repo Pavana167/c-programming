@@ -1,0 +1,207 @@
+#include <stdio.h>
+#define MAX_KUNDEN 10 //Anzahl von maximal Kunden
+
+//Die Funktion fragt den Benutzer nach der Kundennummer und der Anzahl der Artikel im Einkaufswagen  und diese Daten in die Warteschlange eintragen
+void anstellen(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]);
+void drucken(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]);//Die Funktion gibt die Kundennummern aller Kunden in der Warteschlange auf der Konsole aus
+int  zaehleKunden(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]); //Die Funktion zählt die Anzahl der Kunden in der Warteschlange und gibt diese Anzahl zurück
+void bezahlen(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]);//Die Funktion entfernt den ersten Kunden aus der Warteschlange und lässt die anderen Kunden eine Position nach vorne rutschen
+void berechneDurchschnittlicheArtikelanzahl(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN], double *drsAnzahlArtikel);
+// Die Funktion berechnet dann die durchschnittliche Anzahl an Artikeln, die sich in den Einkaufswägender Kunden in der Warteschlange befinden
+
+
+//Hauptschleife
+int main() {
+	int warteSchlange[MAX_KUNDEN][MAX_KUNDEN] = {0}; //warteschlange 2D vektor
+	char eingabe; //Benutzer eingabe
+	int flag = 1;
+	int anzahlKunden = 0;
+	double drsAnzahlArtikel = 0;
+	printf("*** Willkommen an der Supermarktkasse ***\n\n");
+
+	while (flag == 1) {
+	printf("\nWelche Aktion moechten Sie durchfuehren?\n");
+	printf("Druecken Sie 'A' fuer an der Kasse Anstellen.\n");
+	printf("Druecken Sie 'E' fuer Einkauf Bezahlen.\n");
+	printf("Druecken Sie 'D' fuer Warteschlange Drucken.\n");
+	printf("Druecken Sie 'Z' fuer Kunden Zaehlen.\n");
+	printf("Druecken Sie 'S' fuer durschnittliche Anzahl an Artikeln Berechnen.\n");
+	printf("Druecken Sie 'B' fuer Programm Beenden.\n\n");
+	scanf_s("%c",&eingabe,1);
+	while (getchar() != '\n');
+
+	
+		switch (eingabe) {
+		case 'A':
+		case'a':
+			anstellen(warteSchlange);
+			break;
+		case 'E':
+		case 'e':
+			bezahlen(warteSchlange);
+			break;
+		case'D':
+		case 'd':
+			drucken(warteSchlange);
+			
+			break;
+		case'Z':
+		case 'z':
+			anzahlKunden = zaehleKunden(warteSchlange);
+			printf("\n In der Warteschlange stehen %d Kunden an\n", anzahlKunden);
+			
+			break;
+		case'S':
+		case 's':
+			berechneDurchschnittlicheArtikelanzahl(warteSchlange,&drsAnzahlArtikel);
+			printf("Die kunden haben  durchschnittliche %.2lf Artikel im Einkaufswagen");
+			break;
+		case'B':
+		case 'b':
+			printf("\nProgramm beendet!\n");
+			flag = 0;
+			break;
+		default:
+			printf("\nUngueltige Eingabe!\n");
+			break;
+		}
+	}
+
+}
+
+/*Die Funktion fragt den Benutzer nach der Kundennummer und der Anzahl der Artikel im Einkaufswagen  
+* und diese Daten in die Warteschlange eintragen
+* Parameter :int warteSchlange[MAX_KUNDEN][MAX_KUNDEN] : 2D array der Warteschlange
+* Rueckgabewerte : keine (void)
+
+*/
+void anstellen(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]) {
+	double dbl_kundenNummer = 0; 
+	int kundenNummer = 0;
+	double dbl_artikel = 0;
+	int artikel = 0;
+	int flagEins = 0;
+	int flagZwei = 0;
+	int aktiv = 0;
+
+	if (zaehleKunden(warteSchlange) < MAX_KUNDEN) {
+		aktiv = 1;
+		flagEins = 1;
+		flagZwei = 1;
+	}
+	else {
+		printf("\nWarteschlange ist voll!\n");
+	}
+
+	while (aktiv == 1) {
+		while (flagEins == 1) {
+			printf("\nBitte gebene sie ihre Kundennummer ein:");
+			int test = scanf_s("%lf", &dbl_kundenNummer);
+			while (getchar()!='\n');
+
+			if (test != 1 || dbl_kundenNummer != (int)dbl_kundenNummer || dbl_kundenNummer < 0) {
+				printf("\nUngueltige Eingabe\n");
+				continue;
+			}
+			else {
+				kundenNummer = (int)dbl_kundenNummer;
+				flagEins = 0;
+			}
+
+		}
+
+		
+		while (flagZwei == 1) {
+			printf("\nBitte geben sie der Anzahl der Artikel im Einkaufswagen:");
+			int test = scanf_s("%lf", &dbl_artikel);
+			while (getchar() != '\n');
+
+			if (test != 1 || dbl_artikel != (int)dbl_artikel || dbl_artikel < 0) {
+				printf("\nUngueltige Eingabe\n");
+				continue;
+			}
+			else {
+				artikel = (int)dbl_artikel;
+				flagZwei = 0;
+			}
+		}
+
+		
+		for (int i = 0;i < MAX_KUNDEN;i++) {
+			if (warteSchlange[0][i] == 0) {
+				warteSchlange[0][i] = kundenNummer;
+				
+				break;
+			}
+		}
+		
+
+		for (int j = 0;j < MAX_KUNDEN;j++) {
+			if (warteSchlange[1][j] == 0) {
+				warteSchlange[1][j] = artikel;
+				
+				break;
+			}
+		}
+		aktiv = 0;
+		
+	}
+	
+}
+/*Die Funktion fragt den Benutzer nach der Kundennummer und der Anzahl der Artikel im Einkaufswagen
+* und diese Daten in die Warteschlange eintragen
+* Parameter :int warteSchlange[MAX_KUNDEN][MAX_KUNDEN] : 2D array der Warteschlange
+* Rueckgabewerte : keine (void)
+
+*/
+int zaehleKunden(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]) {
+	int anzahl = 0;
+
+	for (int i = 0; i < MAX_KUNDEN;i++) {
+		if (warteSchlange[0][i] != 0) {
+			anzahl += 1;
+		}
+	}
+	return anzahl;
+}
+
+void drucken(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]) {
+	for (int i = 0; i < MAX_KUNDEN; i++) {
+		if (warteSchlange[0][i] != 0) {
+			printf("%d\t", warteSchlange[0][i]);
+		}
+	}
+}
+
+
+void bezahlen(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN]) {
+	if (zaehleKunden(warteSchlange) != 0) {
+		for (int i = 0;i < MAX_KUNDEN;i++) {
+			if (warteSchlange[0][i] != 0) {
+				warteSchlange[0][i] = 0;
+				break;
+			}
+		}
+
+		for (int i = 0;warteSchlange[0][i] != 0;i++) {
+			warteSchlange[0][i] = warteSchlange[0][i + 1];
+		}
+	}
+	else {
+		printf("\nWarteschlange ist leer\n");
+	}
+	
+}
+
+void berechneDurchschnittlicheArtikelanzahl(int warteSchlange[MAX_KUNDEN][MAX_KUNDEN], double *drsAnzahlArtikel) {
+	if (zaehleKunden(warteSchlange) > 0) {
+		int summe = 0;
+		for (int i = 0;i < MAX_KUNDEN;i++) {
+			summe += warteSchlange[1][i];
+		}
+		*drsAnzahlArtikel = summe / zaehleKunden(warteSchlange);
+	}
+	else {
+		printf("\nWarteschlange ist leer\n");
+	}
+}
